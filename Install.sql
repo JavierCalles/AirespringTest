@@ -1,13 +1,25 @@
 
 
+create database TestJC_Employee
+GO
 
-
---create database TestJC_Employee
---go
 use TestJC_Employee;
-go
+GO
 
-select * from EmployeeRecord
+IF OBJECT_ID('[dbo].[DeleteEmployee]', 'P') IS NOT NULL  
+  DROP PROCEDURE dbo.DeleteEmployee;
+GO
+
+IF OBJECT_ID('[dbo].[SetEmployee]', 'P') IS NOT NULL  
+  DROP PROCEDURE dbo.SetEmployee;
+GO
+
+IF OBJECT_ID('[dbo].[GetEmployees]', 'P') IS NOT NULL  
+  DROP PROCEDURE dbo.GetEmployees;
+GO
+
+IF OBJECT_ID('[dbo].[EmployeeRecord]', 'U') IS NOT NULL  
+  DROP TABLE dbo.EmployeeRecord
 
 CREATE TABLE EmployeeRecord
 (
@@ -19,7 +31,6 @@ EmployeeZip char(5),
 HireDate date
 )
 go
-
 
 CREATE or alter PROCEDURE GetEmployees
 @EmployeeLastName nvarchar(150),
