@@ -1,0 +1,194 @@
+﻿@using TestJavierCalles.Front.Models;
+@model  ListEmployee
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    <h1><span class="badge badge-light">Employees list</span></h1>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                Last Name:
+                <input type="text" class="form-control" maxlength="150" onkeydown="return /[a-z]/i.test(event.key)" id="txtLastName" />
+            </div>
+            <div class="col-md">
+                First Name:
+                <input type="text" class="form-control" maxlength="150" onkeydown="return /[a-z]/i.test(event.key)"  id="txtFirstName" />
+            </div>
+            <div class="col-md">
+                Employee Phone:<input type="tel" class="form-control" placeholder="(555) 555-5555"  id="txtPhone" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                Employee Zip:<input type="number" class="form-control" maxlength="5"  id="txtZip" />
+            </div>
+            <div class="col-sm">
+                <br />
+                <button type="button" class="btn btn-outline-primary" onclick="Add()">Add</button>
+            </div>
+
+        </div>
+
+
+    </div>
+    <br />
+    <br />
+    <div class="container">
+        <form asp-controller="Employee" asp-action="Index" method="get">
+            <div class="row">
+                <div class="col-sm">
+                    <input type="text" class="form-control" placeholder="Search Last Name" onkeydown="return /[a-z]/i.test(event.key)"   maxlength="150" name="lastName" />
+                </div>
+                <div class="col-sm">
+                    <input type="text" class="form-control" placeholder="Search Phone" id="txtSearchphone"   name="phone"/>
+                </div>
+                <div class="col-sm">
+                    <button class="btn btn-light" type="submit">Search</button>
+                </div>
+
+            </div>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th scope="col">Employee Id</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Zip</th>
+                    <th scope="col">Hire Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Employees.Count(); ++i)
+                {
+                    <tr>
+                        <td> <button class="btn btn-outline-warning" onclick="showModal( '@Html.ValueFor(m => m.Employees[i].EmployeeId)','@Html.ValueFor(m => m.Employees[i].EmployeeLastName)','@Html.ValueFor(m => m.Employees[i].EmployeeFirstName)','@Html.ValueFor(m => m.Employees[i].EmployeePhone)','@Html.ValueFor(m => m.Employees[i].EmployeeZip)' )">Update</button></td>
+                        <td> <button class="btn btn-outline-danger" onclick="Delete('@Html.ValueFor(m => m.Employees[i].EmployeeId)')">Delete</button></td>
+                        <td>   @Html.DisplayTextFor(m => m.Employees[i].EmployeeId) </td>
+                        <td>        @Html.DisplayTextFor(m => m.Employees[i].EmployeeLastName) </td>
+                        <td>        @Html.DisplayTextFor(m => m.Employees[i].EmployeeFirstName) </td>
+                        <td>        @Html.DisplayTextFor(m => m.Employees[i].EmployeePhone) </td>
+                        <td>        @Html.DisplayTextFor(m => m.Employees[i].EmployeeZip) </td>
+                        @{
+                            string date = Model.Employees[i].HireDate.Date.ToString("MM-dd-yyyy");
+                        }
+                        <td>        @Html.DisplayTextFor(m => date) </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="modalUpdateEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                Employee Id:
+                                <input type="text" class="form-control" disabled="disabled" id="txtEmployeeIdUpdate" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Last Name:
+                                <input type="text" class="form-control" onkeydown="return /[a-z]/i.test(event.key)"  id="txtLastNameUpdate" />
+                            </div>
+                            <div class="col-sm">
+                                First Name:
+                                <input type="text" class="form-control" onkeydown="return /[a-z]/i.test(event.key)"  id="txtFirstNameUpdate" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md">
+                                Employee Phone:<input type="tel" class="form-control" placeholder="(555) 555-5555" id="txtPhoneUpdate" />
+                            </div>
+                            <div class="col-sm">
+                                Zip:<input type="number" class="form-control" maxlength="5"  id="txtZipUpdate" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="Update()">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        //Validation for show a message of an action
+        if (TempData["Message"] != null)
+        {
+            if (TempData["Message"].ToString() == "Exito")
+            {
+
+                Html.RenderPartial("_SuccessMessage");
+
+            }
+            else if (TempData["Message"].ToString() == "Error")
+            {
+                Html.RenderPartial("_ErrorMessage");
+            }
+        }
+    }
+
+
+</body>
+</html>
+
+@System.Web.Optimization.Scripts.Render("~/bundles/jquery")
+@System.Web.Optimization.Scripts.Render("~/bundles/bootstrap")
+@System.Web.Optimization.Scripts.Render("~/bundles/Site")
+
+<script src="~/Scripts/Employee/Employee.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#successModal').modal('show')
+
+        $('#errorModal').modal('show')
+    });
+
+    var UrlAdd = "@Url.Action("AddEmployee", "Employee")";
+    var UrlUpdate = "@Url.Action("UpdateEmployee", "Employee")";
+    var UrlDelete = "@Url.Action("DeleteEmployee", "Employee")";
+    var UrlSearch = "@Url.Action("Search", "Employee")";
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

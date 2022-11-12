@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Clientes prueba tecnica</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    @* Espacio para menu cuando se agregue una pantalla ademas de cliente *@
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Aplicacion de prueba</p>
+        </footer>
+    </div>
+    @{
+        if (TempData["Mensaje"] != null)
+        {
+            if (TempData["Mensaje"].ToString() == "Exito")
+            {
+                Html.RenderPartial("_MensajeExito");
+
+            }
+            else if(TempData["Mensaje"].ToString() == "Error")
+            {
+                Html.RenderPartial("_MensajeError");
+            }
+        }
+    }
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/Site")
+    @RenderSection("scripts", required: false)
+
+
+    <div class="modal fade" id="modalUpdateCliente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Informacion</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="form-control" id="txtIdCliente" />
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                Documento identificacion:
+                                <input type="number" class="form-control" maxlength="9" id="txtDocumentoUpdate" />
+                            </div>
+                            <div class="col-sm">
+                                Primer nombre:
+                                <input type="text" class="form-control" id="txtPrNombreUpdate" />
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                Primer apellido:
+                                <input type="text" class="form-control" id="txtPrApeUpdate" />
+                            </div>
+                            <div class="col-sm">
+                                Edad:<input type="number" class="form-control" maxlength="10" id="txtEdadUpdate" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary"  onclick="Actualizar()">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>
+
+
+
