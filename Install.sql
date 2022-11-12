@@ -32,7 +32,7 @@ HireDate date
 )
 go
 
-CREATE or alter PROCEDURE GetEmployees
+CREATE PROCEDURE GetEmployees
 @EmployeeLastName nvarchar(150),
 @EmployeePhone nvarchar(20)
 as
@@ -43,7 +43,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE SetEmployee
+CREATE PROCEDURE SetEmployee
 @EmployeeLastName nvarchar(150),
 @EmployeeFirstName nvarchar(150),
 @EmployeePhone nvarchar(20),
@@ -71,7 +71,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE DeleteEmployee
+CREATE PROCEDURE DeleteEmployee
 @EmployeeId int
 as
 BEGIN

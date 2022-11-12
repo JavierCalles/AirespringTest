@@ -48,7 +48,7 @@ namespace TestJavierCalles.Front.Util
                 EmployeePhone= s.EmployeePhone,
                 EmployeeZip= Convert.ToInt32(s.EmployeeZip),
                 HireDate= s.HireDate
-            }).ToList();
+            }).OrderBy(s => s.HireDate).ToList();
 
             return listEmployee;
         }
